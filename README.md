@@ -10,47 +10,34 @@ Transform the home services industry by creating a trusted marketplace that:
 - **Gamifies Quality**: Reward excellent service providers with badges and rankings
 - **Scales Intelligently**: Start local (Garden Route) → Provincial → National
 
-## 🏗️ Architecture
+## 🏗️ System Architecture
 
-**Cloud-native microservices** built for scalability:
-Internet Traffic
-|
-API Gateway (Kong/Traefik)
-|
-Authentication & Rate Limiting
-|
-+---+---+---+---+---+---+
-|   |   |   |   |   |   |
-v   v   v   v   v   v   v
-User      Provider    Booking     Review      Payment     Notification  Gamification
-Service   Service     Service     Service     Service     Service       Service
-|         |           |           |           |           |             |
-|         |           |           |           |           |             |
-PostgreSQL PostgreSQL PostgreSQL PostgreSQL PostgreSQL PostgreSQL   PostgreSQL
-|         |           |           |           |           |             |
-+----+----+-----+-----+-----+-----+-----+-----+-----+----+-------------+
-|
-Event Bus
-(Kafka/RabbitMQ)
-Async Communication
+**Microservices Communication Flow:**
 
-**Service Responsibilities:**
+1. **API Gateway** ← All external requests
+2. **Authentication Service** ← Validates users and permissions
+3. **Core Services** ← Business logic and data processing
+4. **Event Bus** ← Async communication between services
+5. **Databases** ← Each service has its own PostgreSQL instance
 
-| Service | Purpose | Database | Key Features |
-|---------|---------|----------|--------------|
-| **User Service** | Authentication & Profiles | PostgreSQL | JWT tokens, password hashing, user management |
-| **Provider Service** | Service Provider Management | PostgreSQL | Profiles, portfolios, availability, service areas |
-| **Booking Service** | Job Scheduling & Management | PostgreSQL | Requests, scheduling, status tracking |
-| **Review Service** | Ratings & Reviews | PostgreSQL | Star ratings, reviews, reputation scoring |
-| **Payment Service** | Payment Processing | PostgreSQL | PayFast integration, transactions, billing |
-| **Notification Service** | Communications | PostgreSQL | WhatsApp, SMS, email notifications |
-| **Gamification Service** | Badges & Achievements | PostgreSQL | Points, levels, leaderboards, rewards |
+### Service Breakdown
 
-**Key Architectural Principles:**
+| Service | Port | Purpose | Database | Key Features |
+|---------|------|---------|----------|--------------|
+| **User Service** | 3001 | Authentication & Profiles | PostgreSQL | JWT tokens, password hashing, user management |
+| **Provider Service** | 3002 | Service Provider Management | PostgreSQL | Profiles, portfolios, availability, service areas |
+| **Booking Service** | 3003 | Job Scheduling & Management | PostgreSQL | Requests, scheduling, status tracking |
+| **Review Service** | 3004 | Ratings & Reviews | PostgreSQL | Star ratings, reviews, reputation scoring |
+| **Payment Service** | 3005 | Payment Processing | PostgreSQL | PayFast integration, transactions, billing |
+| **Notification Service** | 3006 | Communications | PostgreSQL | WhatsApp, SMS, email notifications |
+| **Gamification Service** | 3007 | Badges & Achievements | PostgreSQL | Points, levels, leaderboards, rewards |
+
+### Architecture Principles
 - **Database per Service**: Each microservice owns its data
-- **Event-Driven Communication**: Services communicate via events
+- **Event-Driven Communication**: Services communicate via message queues
 - **API Gateway**: Single entry point with authentication and rate limiting
 - **Horizontal Scaling**: Scale services independently based on demand
+- **Security First**: JWT authentication, input validation, rate limiting
 
 ## 🚀 Current Status
 
@@ -80,20 +67,20 @@ Async Communication
 
 ## 🛠️ Tech Stack
 
-**Backend Services:**
+### Backend Services
 - **Runtime**: Node.js with TypeScript
 - **Framework**: Express.js with security middleware
 - **Database**: PostgreSQL (database per service)
 - **Caching**: Redis for session and rate limiting
 - **Authentication**: JWT tokens with bcrypt hashing
 
-**Infrastructure:**
+### Infrastructure
 - **Containers**: Podman (dev), Docker (production)
 - **Orchestration**: Kubernetes ready
 - **API Gateway**: Kong or Traefik planned
 - **Monitoring**: Prometheus + Grafana + ELK stack
 
-**South African Integrations:**
+### South African Integrations
 - **Payments**: PayFast, PayGate, Ozow
 - **Communications**: WhatsApp Business API, Clickatell SMS
 - **Compliance**: POPIA data protection ready
@@ -138,18 +125,18 @@ home-services-platform/
 ├── docs/                     # API documentation
 └── docker-compose.yml        # Infrastructure services
 🇿🇦 South African Market Focus
-Geographic Strategy:
+Geographic Strategy
 
 Phase 1: Garden Route (Plettenberg Bay, Knysna, George)
 Phase 2: Western Cape Province
 Phase 3: National expansion
 
-Service Categories:
+Service Categories
 
 Plumbing, Electrical, Cleaning, Handyman, Garden Services
 HVAC, Pest Control, Security, Painting, Tiling
 
-Local Integrations:
+Local Integrations
 
 PayFast (primary payment gateway)
 WhatsApp Business API for estate communities
@@ -163,16 +150,14 @@ Challenges encountered and solutions developed
 Code snippets and architecture evolution
 Learning insights and best practices discovered
 
-🤝 Contributing
-This project documents the complete journey from MVP to production-ready platform, serving as both a learning resource and commercial platform.
 📈 Metrics & Goals
-Technical KPIs:
+Technical KPIs
 
 Service uptime: 99.9% target
 API response time: <200ms average
 Database queries: <50ms average
 
-Business KPIs:
+Business KPIs
 
 Provider satisfaction: 4.5+ stars
 Booking completion rate: 95%+
