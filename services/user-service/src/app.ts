@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import { httpLogger, logger } from './utils/logger';
+import authRoutes from './routes/authRoutes';
 
 dotenv.config();
 
@@ -35,6 +36,9 @@ app.get('/health', (req, res) => {
     version: process.env.SERVICE_VERSION || '1.0.0'
   });
 });
+
+// API routes
+app.use('/api/v1/auth', authRoutes);
 
 // Global error handler
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
