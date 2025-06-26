@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import dotenv from 'dotenv';
 import { httpLogger, logger } from './utils/logger';
 import authRoutes from './routes/authRoutes';
+import userRoutes from './routes/userRoutes';
 
 dotenv.config();
 
@@ -37,8 +38,11 @@ app.get('/health', (req, res) => {
   });
 });
 
-// API routes
+// Public API routes
 app.use('/api/v1/auth', authRoutes);
+
+// Protected API routes (require authentication)
+app.use('/api/v1/users', userRoutes);
 
 // Global error handler
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
